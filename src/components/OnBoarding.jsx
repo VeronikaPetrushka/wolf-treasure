@@ -131,7 +131,7 @@ const OnBoarding = () => {
                     step > 0 && (
                         <TouchableOpacity onPress={handlePrevious} style={styles.btn}>
                             <View style={{width: 28, height: 28, marginRight: 10}}>
-                                <Icons type={'back'} />
+                                <Icons type={'previous'} />
                             </View>
                             <Text style={styles.backText}>Back</Text>
                         </TouchableOpacity>    

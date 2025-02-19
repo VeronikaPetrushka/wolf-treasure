@@ -5,6 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import OnBoardingScreen from './src/screens/OnBoardingScreen';
 import FormScreen from './src/screens/FormScreen';
 import GymScreen from './src/screens/GymScreen';
+import WorkoutsScreen from './src/screens/WorkoutsScreen';
+import AddWorkoutScreen from './src/screens/AddWorkoutScreen';
 
 enableScreens();
 
@@ -28,6 +30,16 @@ const App = () => {
               <Stack.Screen 
                     name="GymScreen" 
                     component={GymScreen} 
+                    options={{ headerShown: false }} 
+              />
+              <Stack.Screen 
+                    name="WorkoutsScreen" 
+                    component={WorkoutsScreen} 
+                    options={{ headerShown: false }} 
+              />
+              <Stack.Screen 
+                    name="AddWorkoutScreen" 
+                    component={AddWorkoutScreen} 
                     options={{ headerShown: false }} 
               />
         </Stack.Navigator>

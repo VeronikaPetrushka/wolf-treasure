@@ -1,12 +1,11 @@
 import { View } from "react-native"
-import Workouts from "../components/Workouts"
+import AddWorkout from "../components/AddWorkout"
 
-const WorkoutsScreen = ({ route }) => {
-    const { workout } = route.params;
+const AddWorkoutScreen = () => {
 
     return (
         <View style={styles.container}>
-            <Workouts workout={workout} />
+            <AddWorkout />
         </View>
     )
 }; 
@@ -18,4 +17,4 @@ const styles = {
     }
 }
 
-export default WorkoutsScreen;
+export default AddWorkoutScreen;
