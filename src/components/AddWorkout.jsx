@@ -1,21 +1,12 @@
-//logic save & exercises
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Image, StyleSheet, Dimensions, TextInput, ScrollView, SectionList } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, TextInput, ScrollView } from "react-native";
+import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from "@react-navigation/native";
+import { format } from "date-fns";
 import Icons from "./Icons";
 
 const { height } = Dimensions.get("window");
-
-const titles = [
-    'Your settings',
-    'Height and weight',
-    'Lifestyle',
-    'Training',
-    'Level',
-    'Your goal',
-    'Select a program'
-];
 
 const AddWorkout = () => {
     const navigation = useNavigation();
@@ -23,15 +14,120 @@ const AddWorkout = () => {
     const [name, setName] = useState(null);
     const [calories, setCalories] = useState(null);
     const [duration, setDuration] = useState(null);
-    const [exercise, setExercise] = useState(null);
-    const [repetitions, setRepetitions] = useState(null);
-    const [sets, setSets] = useState(null);
-    const [exDuration, setExDuration] = useState(null);
-    const [rest, setRest] = useState(null);
+    const [exercises, setExercises] = useState([]);
 
-    const handleSave = async () => {
+    const [selectDuration, setSelectDuration] = useState(false);
+    const [selectRest, setSelectRest] = useState(false);
+    const [dates, setDates] = useState([]);
+    const [selectedDate, setSelectedDate] = useState(null);
+
+    useEffect(() => {
+        const today = new Date();
+        const dateArray = [];
+        
+        if (when === 'Schedule') {
+            for (let i = 0; i < 7; i++) {
+                const futureDate = new Date(today);
+                futureDate.setDate(today.getDate() + i);
+                dateArray.push(futureDate);
+            }
+        } else {
+            for (let i = -3; i <= 0; i++) {
+                const pastDate = new Date(today);
+                pastDate.setDate(today.getDate() + i);
+                dateArray.push(pastDate);
+            }
+        }
+
+        setDates(dateArray);
+    }, [when]);
+
+    const handleDurationChange = (event, selectedTime, index) => {
+        setSelectDuration(false);
+    
+        if (selectedTime && exercises[index]) { 
+            const hours = selectedTime.getHours();
+            const minutes = selectedTime.getMinutes();
+            const seconds = selectedTime.getSeconds();
+    
+            const formattedTime = `${hours}h ${minutes.toString().padStart(2, "0")}m ${seconds.toString().padStart(2, "0")}s`;
+    
+            setExercises((prevExercises) => {
+                const newExercises = prevExercises.map((ex, i) =>
+                    i === index ? { ...ex, exDuration: formattedTime } : ex
+                );
+                console.log("Updated Exercises:", newExercises);
+                return newExercises;
+            });
+        }
     };
     
+    const handleSelectRest = (event, selectedTime, index) => {
+        setSelectRest(false);
+    
+        if (selectedTime && exercises[index]) {
+            const minutes = selectedTime.getMinutes();
+            const seconds = selectedTime.getSeconds();
+    
+            const formattedRestTime = `${minutes}m ${seconds.toString().padStart(2, "0")}s`;
+    
+            setExercises((prevExercises) => {
+                const newExercises = prevExercises.map((ex, i) =>
+                    i === index ? { ...ex, rest: formattedRestTime } : ex
+                );
+                console.log("Updated Exercises:", newExercises);
+                return newExercises;
+            });
+        }
+    };
+        
+    const handleDurationToggle = (index) => {
+        setSelectDuration((prevIndex) => (prevIndex === index ? false : index));
+    };
+    
+    const handleRestToggle = (index) => {
+        setSelectRest((prevIndex) => (prevIndex === index ? false : index));
+    };
+        
+    const handleAddExercise = () => {
+        setExercises([
+            ...exercises,
+            { name: "", repetitions: "", sets: "", exDuration: "", rest: "" }
+        ]);
+    };    
+
+    const handleSave = async () => {
+        try {
+
+            if (!name || !calories || !duration || exercises.length === 0 || exercises.some(ex => !ex.name || !ex.repetitions || !ex.sets || !ex.exDuration || !ex.rest)) {
+                alert('Please fill out all fields before saving!');
+                return;
+            }
+
+            const newWorkout = {
+                when,
+                name,
+                calories,
+                duration,
+                exercises,
+                selectedDate
+            };
+    
+            const storageKey = when === 'Past' ? 'history' : 'workouts';
+            
+            const existingWorkouts = await AsyncStorage.getItem(storageKey);
+            const workouts = existingWorkouts ? JSON.parse(existingWorkouts) : [];
+    
+            workouts.push(newWorkout);
+    
+            await AsyncStorage.setItem(storageKey, JSON.stringify(workouts));
+    
+            navigation.goBack();
+        } catch (error) {
+            console.error("Error saving workout:", error);
+        }
+    };
+        
     return (
         <View style={styles.container}>
 
@@ -82,38 +178,89 @@ const AddWorkout = () => {
                 />
 
                 <Text style={styles.label}>Exercises</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Exercise name"
-                    placeholderTextColor="#999"
-                    value={exercise}
-                    onChangeText={setExercise}
-                />
+                {exercises.map((exercise, index) => (
+                    <View key={index} style={{ width: "100%", marginBottom: 12 }}>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Exercise name"
+                            placeholderTextColor="#999"
+                            value={exercise.name}
+                            onChangeText={(text) => {
+                                const newExercises = [...exercises];
+                                newExercises[index].name = text;
+                                setExercises(newExercises);
+                            }}
+                        />
+                        <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between" }}>
+                            <TextInput
+                                style={[styles.input, { width: "48.5%", textAlign: "center" }]}
+                                placeholder="Repetitions"
+                                placeholderTextColor="#999"
+                                value={exercise.repetitions}
+                                onChangeText={(text) => {
+                                    const newExercises = [...exercises];
+                                    newExercises[index].repetitions = text;
+                                    setExercises(newExercises);
+                                }}
+                            />
+                            <TextInput
+                                style={[styles.input, { width: "48.5%", textAlign: "center" }]}
+                                placeholder="Sets"
+                                placeholderTextColor="#999"
+                                value={exercise.sets}
+                                onChangeText={(text) => {
+                                    const newExercises = [...exercises];
+                                    newExercises[index].sets = text;
+                                    setExercises(newExercises);
+                                }}
+                            />
+                            <TouchableOpacity style={styles.exBtn} onPress={() => handleDurationToggle(index)}>
+                                <Text style={styles.exBtnText}>{exercise.exDuration ? exercise.exDuration : "Duration hh:mm"}</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.exBtn} onPress={() => handleRestToggle(index)}>
+                                <Text style={styles.exBtnText}>{exercise.rest ? exercise.rest : "Rest mm:ss"}</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                ))}
 
-                <View style={{width: '100%', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginBottom: 12}}>
-                    <TextInput
-                        style={[styles.input, {width: '48.5%', textAlign: 'center'}]}
-                        placeholder="Repetitions"
-                        placeholderTextColor="#999"
-                        value={repetitions}
-                        onChangeText={setRepetitions}
+                {selectDuration !== false && (
+                    <DateTimePicker
+                        value={new Date()}
+                        mode="time"
+                        themeVariant="dark"
+                        is24Hour={true}
+                        display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                        onChange={(event, selectedTime) => handleDurationChange(event, selectedTime, selectDuration)}
                     />
-                    <TextInput
-                        style={[styles.input, {width: '48.5%', textAlign: 'center'}]}
-                        placeholder="Sets"
-                        placeholderTextColor="#999"
-                        value={sets}
-                        onChangeText={setSets}
+                )}
+                {selectRest !== false && (
+                    <DateTimePicker
+                        value={new Date()}
+                        mode="time"
+                        themeVariant="dark"
+                        is24Hour={true}
+                        display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                        onChange={(event, selectedTime) => handleSelectRest(event, selectedTime, selectRest)}
                     />
-                    <TouchableOpacity style={styles.exBtn}>
-                        <Text style={styles.exBtnText}>Duration</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.exBtn}>
-                        <Text style={styles.exBtnText}>Rest</Text>
-                    </TouchableOpacity>
+                )}
+
+                <Text style={styles.backBtnText} onPress={handleAddExercise}>+ Add exercise</Text>
+
+                <View style={styles.datesContainer}>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ flexDirection: "row" }}>
+                        {dates.map((date, index) => (
+                            <TouchableOpacity 
+                                key={index} 
+                                style={[styles.dateBox, selectedDate === date && {backgroundColor: '#731de5'}]} 
+                                onPress={() => setSelectedDate(date)}
+                                >
+                                <Text style={styles.dateText}>{format(date, 'eee, dd')}</Text>
+                                <Text style={styles.monthText}>{format(date, 'MMM')}</Text>
+                            </TouchableOpacity>
+                        ))}
+                    </ScrollView>
                 </View>
-
-                <Text style={styles.backBtnText}>+ Add exercise</Text>
 
                 <View style={{height: 100}} />
             </ScrollView>
@@ -232,6 +379,32 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         color: '#fff',
         lineHeight: 20.3
+    },
+
+    datesContainer: {
+        marginTop: 20,
+        marginBottom: 30
+    },
+
+    dateBox: {
+        marginRight: 10,
+        alignItems: 'center',
+        width: 100,
+        padding: 10,
+        borderRadius: 100,
+        backgroundColor: 'rgba(120, 120, 120, 0.3)',
+    },
+
+    dateText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: '600',
+    },
+
+    monthText: {
+        color: '#999',
+        fontSize: 12,
+        fontWeight: '400',
     },
     
 });

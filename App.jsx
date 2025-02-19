@@ -7,6 +7,11 @@ import FormScreen from './src/screens/FormScreen';
 import GymScreen from './src/screens/GymScreen';
 import WorkoutsScreen from './src/screens/WorkoutsScreen';
 import AddWorkoutScreen from './src/screens/AddWorkoutScreen';
+import FoodScreen from './src/screens/FoodScreen';
+import AddMealScreen from './src/screens/AddMealScreen';
+import ArticlesScreen from './src/screens/ArticlesScreen';
+import ArticleDetailsScreen from './src/screens/ArticleDetailsScreen';
+import ProfileScreen from './src/screens/ProfileScreen';
 
 enableScreens();
 
@@ -40,6 +45,31 @@ const App = () => {
               <Stack.Screen 
                     name="AddWorkoutScreen" 
                     component={AddWorkoutScreen} 
+                    options={{ headerShown: false }} 
+              />
+              <Stack.Screen 
+                    name="FoodScreen" 
+                    component={FoodScreen} 
+                    options={{ headerShown: false }} 
+              />
+              <Stack.Screen 
+                    name="AddMealScreen" 
+                    component={AddMealScreen} 
+                    options={{ headerShown: false }} 
+              />
+              <Stack.Screen 
+                    name="ArticlesScreen" 
+                    component={ArticlesScreen} 
+                    options={{ headerShown: false }} 
+              />
+              <Stack.Screen 
+                    name="ArticleDetailsScreen" 
+                    component={ArticleDetailsScreen} 
+                    options={{ headerShown: false }} 
+              />
+              <Stack.Screen 
+                    name="ProfileScreen" 
+                    component={ProfileScreen} 
                     options={{ headerShown: false }} 
               />
         </Stack.Navigator>

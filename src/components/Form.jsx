@@ -368,7 +368,7 @@ const Form = () => {
                             </TouchableOpacity>
                             <Text style={styles.label}>Athlete</Text>
                         </View>
-                        <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
+                        <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24, zIndex: 10}}>
                             <TouchableOpacity style={styles.checkBtn} onPress={() => setLevel('Professional')}>
                                 {level === 'Professional' && (
                                     <View style={{width: 24, height: 24}}>

@@ -1,11 +1,12 @@
 import { View } from "react-native"
 import ArticleDetails from "../components/ArticleDetails"
 
-const ArticleDetailsScreen = () => {
+const ArticleDetailsScreen = ({ route }) => {
+    const { article } = route.params;
 
     return (
         <View style={styles.container}>
-            <ArticleDetails />
+            <ArticleDetails article={article} />
         </View>
     )
 }; 

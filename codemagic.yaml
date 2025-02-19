@@ -1,16 +1,16 @@
 workflows:
     sample-workflow:
-        name: Wolf Tressure
+        name: Wolf Fit Plus
         max_build_duration: 120
         instance_type: mac_mini_m1
         integrations:
-          app_store_connect: Wolf Tressure API key
+          app_store_connect: Wolf Fit Plus API key
         environment:
           ios_signing:
             distribution_type: app_store
             bundle_identifier: com.WolfTressure2024
           vars:
-            APP_STORE_APPLE_ID: 6741899517
+            APP_STORE_APPLE_ID: 6742177832
             BUNDLE_ID: "com.WolfTressure2024"
             XCODE_WORKSPACE: "WolfTressure.xcworkspace"
             XCODE_SCHEME: "WolfTressure"
@@ -50,4 +50,4 @@ workflows:
           app_store_connect:
             auth: integration
             submit_to_app_store: true
-            copyright: Wolf Tressure 2024
+            copyright: Wolf Fit Plus 2024

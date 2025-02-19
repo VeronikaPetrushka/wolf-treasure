@@ -120,7 +120,7 @@ const OnBoarding = () => {
             {
                 step === 4 && (
                     <View style={styles.innerContainer}>
-                        <Image source={require('../assets/onboarding/steps/5/piece.png')} style={{width: 300, height: 306, resizeMode: 'contain', marginTop: height * 0.04, alignSelf: 'center'}} />
+                        <Image source={require('../assets/onboarding/steps/5/piece.png')} style={{width: 300, height: 280, resizeMode: 'cover', borderRadius: 16, marginTop: height * 0.04, alignSelf: 'center'}} />
                         <Image source={require('../assets/onboarding/steps/5/wolf.png')}  style={{width: 205, height: 210, resizeMode: 'contain', position: 'absolute', left: -32, top: height * 0.52}} />
                     </View>
                 )

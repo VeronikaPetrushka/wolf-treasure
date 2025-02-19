@@ -38,6 +38,42 @@ const Icons = ({ type, active }) => {
     case 'back':
       imageSource = require('../assets/icons/back.png');
       break;
+    case 'done':
+      imageSource = require('../assets/icons/done.png');
+      break;
+    case 'pause':
+      imageSource = require('../assets/icons/pause.png');
+      break;
+    case 'stop':
+      imageSource = require('../assets/icons/stop.png');
+      break;
+    case 'add':
+      imageSource = require('../assets/icons/add.png');
+      break;
+    case 'share':
+      imageSource = require('../assets/icons/share.png');
+      break;
+    case 'cross':
+      imageSource = require('../assets/icons/cross.png');
+      break;
+    case 'edit':
+      imageSource = require('../assets/icons/edit.png');
+      break;
+    case 'reset':
+      imageSource = require('../assets/icons/reset.png');
+      break;
+    case 'terms':
+      imageSource = require('../assets/icons/terms.png');
+      break;
+    case 'rate':
+      imageSource = require('../assets/icons/rate.png');
+      break;
+    case 'arrow':
+      imageSource = require('../assets/icons/arrow.png');
+      break;
+    case 'workout':
+      imageSource = require('../assets/icons/workout.png');
+      break;
   }
 
   return (
