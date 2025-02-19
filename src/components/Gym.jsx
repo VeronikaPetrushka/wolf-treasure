@@ -122,7 +122,7 @@ const Gym = () => {
                                         key={index}
                                         >
                                         <View style={{width: 52, height: 52, marginRight: 16}}>
-                                            <Icons type={'power'} />
+                                            <Icons type={'workout'} />
                                         </View>
                                         <View style={{height: '100%', justifyContent: 'space-between'}}>
                                             <Text style={styles.workoutTitle}>{workout.title}</Text>
@@ -139,7 +139,7 @@ const Gym = () => {
                                         key={index}
                                         >
                                         <View style={{width: 52, height: 52, marginRight: 16}}>
-                                            <Icons type={'power'} />
+                                            <Icons type={'workout'} />
                                         </View>
                                         <View style={{height: '100%', justifyContent: 'space-between'}}>
                                             <Text style={styles.workoutTitle}>{workout.name}</Text>
