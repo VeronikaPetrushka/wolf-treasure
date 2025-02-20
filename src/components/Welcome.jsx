@@ -14,7 +14,7 @@ const titles = [
     'Easily manage your account'
 ];
 
-const OnBoarding = () => {
+const Welcome = () => {
     const navigation = useNavigation();
     const [step, setStep] = useState(0);
     const [userData, setUserData] = useState(null);
@@ -36,9 +36,9 @@ const OnBoarding = () => {
 
     const handleNavigate = () => {
         if(userData) {
-            navigation.navigate("GymScreen");
+            navigation.navigate("GymScreeen");
         } else {
-            navigation.navigate("FormScreen");
+            navigation.navigate("FormScreeen");
         }
     }
 
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: "center",
-        backgroundColor: "#4b2e18",
+        backgroundColor: "#5333a7",
         padding: 16,
         paddingTop: height * 0.07
     },
@@ -233,4 +233,4 @@ const styles = StyleSheet.create({
     
 });
 
-export default OnBoarding;
+export default Welcome;

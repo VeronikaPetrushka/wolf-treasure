@@ -2,7 +2,7 @@ import { enableScreens } from 'react-native-screens';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import OnBoardingScreen from './src/screens/OnBoardingScreen';
+import WelcomeScreen from './src/screens/WelcomeScreen';
 import FormScreen from './src/screens/FormScreen';
 import GymScreen from './src/screens/GymScreen';
 import WorkoutsScreen from './src/screens/WorkoutsScreen';
@@ -21,10 +21,10 @@ const App = () => {
 
   return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName={"OnBoardingScreen" }>
+        <Stack.Navigator initialRouteName={"WelcomeScreen" }>
               <Stack.Screen 
-                    name="OnBoardingScreen" 
-                    component={OnBoardingScreen} 
+                    name="WelcomeScreen" 
+                    component={WelcomeScreen} 
                     options={{ headerShown: false }} 
               />
               <Stack.Screen 
