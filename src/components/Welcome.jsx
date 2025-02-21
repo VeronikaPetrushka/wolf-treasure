@@ -36,9 +36,9 @@ const Welcome = () => {
 
     const handleNavigate = () => {
         if(userData) {
-            navigation.navigate("GymScreeen");
+            navigation.navigate("GymScreen");
         } else {
-            navigation.navigate("FormScreeen");
+            navigation.navigate("FormScreen");
         }
     }
 
