@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Image, StyleSheet, Dimensions, TextInput, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, Image, StyleSheet, Dimensions, TextInput, ScrollView, ImageBackground } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from "@react-navigation/native";
 import programs from "../constants/programs.js";
@@ -87,444 +87,446 @@ const Form = () => {
     };
     
     return (
-        <View style={styles.container}>
+        <ImageBackground source={require('../assets/back.png')} style={{flex: 1}}>
+            <View style={styles.container}>
 
-            <Text style={styles.title}>{titles[step]}</Text>
+                <Text style={styles.title}>{titles[step]}</Text>
 
-            {
-                step === 0 && (
-                    <View style={styles.innerContainer}>
-                        <Text style={[styles.label, {marginBottom: 20}]}>Enter your settings</Text>
-                        <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24}}>
-                            <TouchableOpacity 
-                                style={[styles.targetBtn, target === 'Chest' && {backgroundColor: '#731de5'}]} 
-                                onPress={() => setTarget('Chest')}
-                                >
-                                <Text style={styles.targetBtnText}>Chest</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity 
-                                style={[styles.targetBtn, target === 'Waist' && {backgroundColor: '#731de5'}]} 
-                                onPress={() => setTarget('Waist')}
-                                >
-                                <Text style={styles.targetBtnText}>Waist</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity 
-                                style={[styles.targetBtn, target === 'Hips' && {backgroundColor: '#731de5'}]} 
-                                onPress={() => setTarget('Hips')}
-                                >
-                                <Text style={styles.targetBtnText}>Hips</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                        <Text style={[styles.label, {marginBottom: 20}]}>Your gender</Text>
-                        <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                            <TouchableOpacity style={styles.checkBtn} onPress={() => setGender('Male')}>
-                                {gender === 'Male' && (
-                                    <View style={{width: 24, height: 24}}>
-                                        <Icons type={'selected'} />
-                                    </View>
-                                )}
-                            </TouchableOpacity>
-                            <Text style={styles.label}>Male</Text>
-                        </View>
-                        <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                            <TouchableOpacity style={styles.checkBtn} onPress={() => setGender('Female')}>
-                                {gender === 'Female' && (
-                                    <View style={{width: 24, height: 24}}>
-                                        <Icons type={'selected'} />
-                                    </View>
-                                )}
-                            </TouchableOpacity>
-                            <Text style={styles.label}>Female</Text>
-                        </View>
-                        <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                            <TouchableOpacity style={styles.checkBtn} onPress={() => setGender('Doesn`t matter')}>
-                                {gender === 'Doesn`t matter' && (
-                                    <View style={{width: 24, height: 24}}>
-                                        <Icons type={'selected'} />
-                                    </View>
-                                )}
-                            </TouchableOpacity>
-                            <Text style={styles.label}>Doesn`t matter</Text>
-                        </View>
-                    </View>
-                )
-            }
-            {
-                step === 1 && (
-                    <View style={styles.innerContainer}>
-                        <Text style={[styles.label, {marginBottom: 20}]}>Height</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="In centimeters"
-                            placeholderTextColor="#999"
-                            value={height}
-                            onChangeText={setHeight}
-                        />
-                        <Text style={[styles.label, {marginBottom: 20}]}>Weight</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="In kilograms"
-                            placeholderTextColor="#999"
-                            value={weight}
-                            onChangeText={setWeight}
-                        />
-                    </View>
-                )
-            }
-            {
-                step === 2 && (
-                    <View style={styles.innerContainer}>
-                        <Text style={[styles.label, {marginBottom: 20}]}>Select your lifestyle</Text>
-                        <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                            <TouchableOpacity style={styles.checkBtn} onPress={() => setLifestyle('Healthy lifestyle')}>
-                                {lifestyle === 'Healthy lifestyle' && (
-                                    <View style={{width: 24, height: 24}}>
-                                        <Icons type={'selected'} />
-                                    </View>
-                                )}
-                            </TouchableOpacity>
-                            <Text style={styles.label}>Healthy lifestyle</Text>
-                        </View>
-                        <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                            <TouchableOpacity style={styles.checkBtn} onPress={() => setLifestyle('Sedentary, office work, studying')}>
-                                {lifestyle === 'Sedentary, office work, studying' && (
-                                    <View style={{width: 24, height: 24}}>
-                                        <Icons type={'selected'} />
-                                    </View>
-                                )}
-                            </TouchableOpacity>
-                            <Text style={styles.label}>Sedentary, office work, studying</Text>
-                        </View>
-                        <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                            <TouchableOpacity style={styles.checkBtn} onPress={() => setLifestyle('Irregular workouts, moderate activity')}>
-                                {lifestyle === 'Irregular workouts, moderate activity' && (
-                                    <View style={{width: 24, height: 24}}>
-                                        <Icons type={'selected'} />
-                                    </View>
-                                )}
-                            </TouchableOpacity>
-                            <Text style={styles.label}>Irregular workouts, moderate activity</Text>
-                        </View>
-
-                        <Image source={require('../assets/decor/wolf-form.png')} style={{width: 390, height: 300, resizeMode: 'contain', position: 'absolute', bottom: 10, right: 0}} />
-
-                    </View>
-                )
-            }
-            {
-                step === 3 && (
-                    <View style={styles.innerContainer}>
-                        <ScrollView style={{width: '100%'}}>
-                            <Text style={[styles.label, {marginBottom: 20}]}>Where do you train?</Text>
-                            <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                                <TouchableOpacity style={styles.checkBtn} onPress={() => setTrainingPlace('Gym')}>
-                                    {trainingPlace === 'Gym' && (
-                                        <View style={{width: 24, height: 24}}>
-                                            <Icons type={'selected'} />
-                                        </View>
-                                    )}
+                {
+                    step === 0 && (
+                        <View style={styles.innerContainer}>
+                            <Text style={[styles.label, {marginBottom: 20}]}>Enter your settings</Text>
+                            <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24}}>
+                                <TouchableOpacity 
+                                    style={[styles.targetBtn, target === 'Chest' && {backgroundColor: '#731de5'}]} 
+                                    onPress={() => setTarget('Chest')}
+                                    >
+                                    <Text style={styles.targetBtnText}>Chest</Text>
                                 </TouchableOpacity>
-                                <Text style={styles.label}>Gym</Text>
-                            </View>
-                            <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                                <TouchableOpacity style={styles.checkBtn} onPress={() => setTrainingPlace('Swimming pool')}>
-                                    {trainingPlace === 'Swimming pool' && (
-                                        <View style={{width: 24, height: 24}}>
-                                            <Icons type={'selected'} />
-                                        </View>
-                                    )}
+                                <TouchableOpacity 
+                                    style={[styles.targetBtn, target === 'Waist' && {backgroundColor: '#731de5'}]} 
+                                    onPress={() => setTarget('Waist')}
+                                    >
+                                    <Text style={styles.targetBtnText}>Waist</Text>
                                 </TouchableOpacity>
-                                <Text style={styles.label}>Swimming pool</Text>
-                            </View>
-                            <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                                <TouchableOpacity style={styles.checkBtn} onPress={() => setTrainingPlace('Section')}>
-                                    {trainingPlace === 'Section' && (
-                                        <View style={{width: 24, height: 24}}>
-                                            <Icons type={'selected'} />
-                                        </View>
-                                    )}
+                                <TouchableOpacity 
+                                    style={[styles.targetBtn, target === 'Hips' && {backgroundColor: '#731de5'}]} 
+                                    onPress={() => setTarget('Hips')}
+                                    >
+                                    <Text style={styles.targetBtnText}>Hips</Text>
                                 </TouchableOpacity>
-                                <Text style={styles.label}>Section</Text>
-                            </View>
-                            <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                                <TouchableOpacity style={styles.checkBtn} onPress={() => setTrainingPlace('At home')}>
-                                    {trainingPlace === 'At home' && (
-                                        <View style={{width: 24, height: 24}}>
-                                            <Icons type={'selected'} />
-                                        </View>
-                                    )}
-                                </TouchableOpacity>
-                                <Text style={styles.label}>At home</Text>
-                            </View>
-                            <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                                <TouchableOpacity style={styles.checkBtn} onPress={() => setTrainingPlace('Other')}>
-                                    {trainingPlace === 'Other' && (
-                                        <View style={{width: 24, height: 24}}>
-                                            <Icons type={'selected'} />
-                                        </View>
-                                    )}
-                                </TouchableOpacity>
-                                <Text style={styles.label}>Other</Text>
                             </View>
 
-                            <Text style={[styles.label, {marginVertical: 20}]}>How often do you train?</Text>
+                            <Text style={[styles.label, {marginBottom: 20}]}>Your gender</Text>
                             <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                                <TouchableOpacity style={styles.checkBtn} onPress={() => setTrainingFrequency('Once a month')}>
-                                    {trainingFrequency === 'Once a month' && (
+                                <TouchableOpacity style={styles.checkBtn} onPress={() => setGender('Male')}>
+                                    {gender === 'Male' && (
                                         <View style={{width: 24, height: 24}}>
                                             <Icons type={'selected'} />
                                         </View>
                                     )}
                                 </TouchableOpacity>
-                                <Text style={styles.label}>Once a month</Text>
+                                <Text style={styles.label}>Male</Text>
                             </View>
                             <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                                <TouchableOpacity style={styles.checkBtn} onPress={() => setTrainingFrequency('1-2 times a week')}>
-                                    {trainingFrequency === '1-2 times a week' && (
+                                <TouchableOpacity style={styles.checkBtn} onPress={() => setGender('Female')}>
+                                    {gender === 'Female' && (
                                         <View style={{width: 24, height: 24}}>
                                             <Icons type={'selected'} />
                                         </View>
                                     )}
                                 </TouchableOpacity>
-                                <Text style={styles.label}>1-2 times a week</Text>
+                                <Text style={styles.label}>Female</Text>
                             </View>
                             <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                                <TouchableOpacity style={styles.checkBtn} onPress={() => setTrainingFrequency('3-4 times a week')}>
-                                    {trainingFrequency === '3-4 times a week' && (
+                                <TouchableOpacity style={styles.checkBtn} onPress={() => setGender('Doesn`t matter')}>
+                                    {gender === 'Doesn`t matter' && (
                                         <View style={{width: 24, height: 24}}>
                                             <Icons type={'selected'} />
                                         </View>
                                     )}
                                 </TouchableOpacity>
-                                <Text style={styles.label}>3-4 times a week</Text>
+                                <Text style={styles.label}>Doesn`t matter</Text>
                             </View>
-                            <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                                <TouchableOpacity style={styles.checkBtn} onPress={() => setTrainingFrequency('More than 4 times a week')}>
-                                    {trainingFrequency === 'More than 4 times a week' && (
-                                        <View style={{width: 24, height: 24}}>
-                                            <Icons type={'selected'} />
-                                        </View>
-                                    )}
-                                </TouchableOpacity>
-                                <Text style={styles.label}>More than 4 times a week</Text>
-                            </View>
-                            <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                                <TouchableOpacity style={styles.checkBtn} onPress={() => setTrainingFrequency('Less often')}>
-                                    {trainingFrequency === 'Less often' && (
-                                        <View style={{width: 24, height: 24}}>
-                                            <Icons type={'selected'} />
-                                        </View>
-                                    )}
-                                </TouchableOpacity>
-                                <Text style={styles.label}>Less often</Text>
-                            </View>
-                            <View style={{height: 150}} />
-                        </ScrollView>
-                    </View>
-                )
-            }
-            {
-                step === 4 && (
-                    <View style={styles.innerContainer}>
-                        <Text style={[styles.label, {marginBottom: 20}]}>What level are you?</Text>
-                        <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                            <TouchableOpacity style={styles.checkBtn} onPress={() => setLevel('Beginner')}>
-                                {level === 'Beginner' && (
-                                    <View style={{width: 24, height: 24}}>
-                                        <Icons type={'selected'} />
-                                    </View>
-                                )}
-                            </TouchableOpacity>
-                            <Text style={styles.label}>Beginner</Text>
                         </View>
-                        <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                            <TouchableOpacity style={styles.checkBtn} onPress={() => setLevel('Amateur')}>
-                                {level === 'Amateur' && (
-                                    <View style={{width: 24, height: 24}}>
-                                        <Icons type={'selected'} />
-                                    </View>
-                                )}
-                            </TouchableOpacity>
-                            <Text style={styles.label}>Amateur</Text>
+                    )
+                }
+                {
+                    step === 1 && (
+                        <View style={styles.innerContainer}>
+                            <Text style={[styles.label, {marginBottom: 20}]}>Height</Text>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="In centimeters"
+                                placeholderTextColor="#999"
+                                value={height}
+                                onChangeText={setHeight}
+                            />
+                            <Text style={[styles.label, {marginBottom: 20}]}>Weight</Text>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="In kilograms"
+                                placeholderTextColor="#999"
+                                value={weight}
+                                onChangeText={setWeight}
+                            />
                         </View>
-                        <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                            <TouchableOpacity style={styles.checkBtn} onPress={() => setLevel('Experienced')}>
-                                {level === 'Experienced' && (
-                                    <View style={{width: 24, height: 24}}>
-                                        <Icons type={'selected'} />
-                                    </View>
-                                )}
-                            </TouchableOpacity>
-                            <Text style={styles.label}>Experienced</Text>
-                        </View>
-                        <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                            <TouchableOpacity style={styles.checkBtn} onPress={() => setLevel('Athlete')}>
-                                {level === 'Athlete' && (
-                                    <View style={{width: 24, height: 24}}>
-                                        <Icons type={'selected'} />
-                                    </View>
-                                )}
-                            </TouchableOpacity>
-                            <Text style={styles.label}>Athlete</Text>
-                        </View>
-                        <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24, zIndex: 10}}>
-                            <TouchableOpacity style={styles.checkBtn} onPress={() => setLevel('Professional')}>
-                                {level === 'Professional' && (
-                                    <View style={{width: 24, height: 24}}>
-                                        <Icons type={'selected'} />
-                                    </View>
-                                )}
-                            </TouchableOpacity>
-                            <Text style={styles.label}>Professional</Text>
-                        </View>
-
-                        <Image source={require('../assets/decor/wolf-form2.png')} style={{width: 390, height: 300, resizeMode: 'contain', position: 'absolute', bottom: 20, right: -20}} />
-                    </View>
-                )
-            }
-            {
-                step === 5 && (
-                    <View style={styles.innerContainer}>
-                        <ScrollView style={{width: '100%'}}>
-                            <Text style={[styles.label, {marginBottom: 20}]}>Please specify your current goal</Text>
+                    )
+                }
+                {
+                    step === 2 && (
+                        <View style={styles.innerContainer}>
+                            <Text style={[styles.label, {marginBottom: 20}]}>Select your lifestyle</Text>
                             <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                                <TouchableOpacity style={styles.checkBtn} onPress={() => setGoal('Improve physical condition')}>
-                                    {goal === 'Improve physical condition' && (
+                                <TouchableOpacity style={styles.checkBtn} onPress={() => setLifestyle('Healthy lifestyle')}>
+                                    {lifestyle === 'Healthy lifestyle' && (
                                         <View style={{width: 24, height: 24}}>
                                             <Icons type={'selected'} />
                                         </View>
                                     )}
                                 </TouchableOpacity>
-                                <Text style={styles.label}>Improve physical condition</Text>
+                                <Text style={styles.label}>Healthy lifestyle</Text>
                             </View>
                             <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                                <TouchableOpacity style={styles.checkBtn} onPress={() => setGoal('Gain muscle mass')}>
-                                    {goal === 'Gain muscle mass' && (
+                                <TouchableOpacity style={styles.checkBtn} onPress={() => setLifestyle('Sedentary, office work, studying')}>
+                                    {lifestyle === 'Sedentary, office work, studying' && (
                                         <View style={{width: 24, height: 24}}>
                                             <Icons type={'selected'} />
                                         </View>
                                     )}
                                 </TouchableOpacity>
-                                <Text style={styles.label}>Gain muscle mass</Text>
+                                <Text style={styles.label}>Sedentary, office work, studying</Text>
                             </View>
                             <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                                <TouchableOpacity style={styles.checkBtn} onPress={() => setGoal('Lose excess weight')}>
-                                    {goal === 'Lose excess weight' && (
+                                <TouchableOpacity style={styles.checkBtn} onPress={() => setLifestyle('Irregular workouts, moderate activity')}>
+                                    {lifestyle === 'Irregular workouts, moderate activity' && (
                                         <View style={{width: 24, height: 24}}>
                                             <Icons type={'selected'} />
                                         </View>
                                     )}
                                 </TouchableOpacity>
-                                <Text style={styles.label}>Lose excess weight</Text>
-                            </View>
-                            <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                                <TouchableOpacity style={styles.checkBtn} onPress={() => setGoal('Just for fun')}>
-                                    {goal === 'Just for fun' && (
-                                        <View style={{width: 24, height: 24}}>
-                                            <Icons type={'selected'} />
-                                        </View>
-                                    )}
-                                </TouchableOpacity>
-                                <Text style={styles.label}>Just for fun</Text>
-                            </View>
-                            <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                                <TouchableOpacity style={styles.checkBtn} onPress={() => setGoal('Other')}>
-                                    {goal === 'Other' && (
-                                        <View style={{width: 24, height: 24}}>
-                                            <Icons type={'selected'} />
-                                        </View>
-                                    )}
-                                </TouchableOpacity>
-                                <Text style={styles.label}>Other</Text>
+                                <Text style={styles.label}>Irregular workouts, moderate activity</Text>
                             </View>
 
-                            <Text style={[styles.label, {marginVertical: 20}]}>How long do you want to achieve your goal?</Text>
-                            <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                                <TouchableOpacity style={styles.checkBtn} onPress={() => setGoalTermin('1-2 months')}>
-                                    {goalTermin === '1-2 months' && (
-                                        <View style={{width: 24, height: 24}}>
-                                            <Icons type={'selected'} />
-                                        </View>
-                                    )}
-                                </TouchableOpacity>
-                                <Text style={styles.label}>1-2 months</Text>
-                            </View>
-                            <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                                <TouchableOpacity style={styles.checkBtn} onPress={() => setGoalTermin('3-6 months')}>
-                                    {goalTermin === '3-6 months' && (
-                                        <View style={{width: 24, height: 24}}>
-                                            <Icons type={'selected'} />
-                                        </View>
-                                    )}
-                                </TouchableOpacity>
-                                <Text style={styles.label}>3-6 months</Text>
-                            </View>
-                            <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                                <TouchableOpacity style={styles.checkBtn} onPress={() => setGoalTermin('Half a year to a year')}>
-                                    {goalTermin === 'Half a year to a year' && (
-                                        <View style={{width: 24, height: 24}}>
-                                            <Icons type={'selected'} />
-                                        </View>
-                                    )}
-                                </TouchableOpacity>
-                                <Text style={styles.label}>Half a year to a year</Text>
-                            </View>
-                            <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                                <TouchableOpacity style={styles.checkBtn} onPress={() => setGoalTermin('More than a year')}>
-                                    {goalTermin === 'More than a year' && (
-                                        <View style={{width: 24, height: 24}}>
-                                            <Icons type={'selected'} />
-                                        </View>
-                                    )}
-                                </TouchableOpacity>
-                                <Text style={styles.label}>More than a year</Text>
-                            </View>
-                            <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
-                                <TouchableOpacity style={styles.checkBtn} onPress={() => setGoalTermin('Other')}>
-                                    {goalTermin === 'Other' && (
-                                        <View style={{width: 24, height: 24}}>
-                                            <Icons type={'selected'} />
-                                        </View>
-                                    )}
-                                </TouchableOpacity>
-                                <Text style={styles.label}>Other</Text>
-                            </View>
-                            <View style={{height: 150}} />
-                        </ScrollView>
-                    </View>
-                )
-            }
-            {
-                step === 6 && (
-                    <View style={styles.innerContainer}>
-                        <ScrollView style={{width: '100%'}}>
-                            {
-                                programs.map((program, index) => (
-                                    <TouchableOpacity 
-                                        style={[styles.programCard, selectedProgram === program && {backgroundColor: '#731de5'}]} 
-                                        key={index} 
-                                        onPress={() => setSelectedProgram(program)}
-                                        >
-                                        <View style={{width: '48%', justifyContent: 'space-between', height: '100%'}}>
-                                            <Text style={styles.programTitle}>{program.title}</Text>
-                                            <Text style={styles.programDesc} numberOfLines={3} ellipsizeMode="tail">{program.description}</Text>
-                                        </View>
-                                        <Image style={styles.programImage} source={program.image} />
+                            <Image source={require('../assets/decor/wolf-form.png')} style={{width: 390, height: 300, resizeMode: 'contain', position: 'absolute', bottom: 10, right: 0}} />
+
+                        </View>
+                    )
+                }
+                {
+                    step === 3 && (
+                        <View style={styles.innerContainer}>
+                            <ScrollView style={{width: '100%'}}>
+                                <Text style={[styles.label, {marginBottom: 20}]}>Where do you train?</Text>
+                                <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
+                                    <TouchableOpacity style={styles.checkBtn} onPress={() => setTrainingPlace('Gym')}>
+                                        {trainingPlace === 'Gym' && (
+                                            <View style={{width: 24, height: 24}}>
+                                                <Icons type={'selected'} />
+                                            </View>
+                                        )}
                                     </TouchableOpacity>
-                                ))
-                            }
-                            <View style={{height: 150}} />
-                        </ScrollView>
-                    </View>
-                )
-            }
+                                    <Text style={styles.label}>Gym</Text>
+                                </View>
+                                <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
+                                    <TouchableOpacity style={styles.checkBtn} onPress={() => setTrainingPlace('Swimming pool')}>
+                                        {trainingPlace === 'Swimming pool' && (
+                                            <View style={{width: 24, height: 24}}>
+                                                <Icons type={'selected'} />
+                                            </View>
+                                        )}
+                                    </TouchableOpacity>
+                                    <Text style={styles.label}>Swimming pool</Text>
+                                </View>
+                                <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
+                                    <TouchableOpacity style={styles.checkBtn} onPress={() => setTrainingPlace('Section')}>
+                                        {trainingPlace === 'Section' && (
+                                            <View style={{width: 24, height: 24}}>
+                                                <Icons type={'selected'} />
+                                            </View>
+                                        )}
+                                    </TouchableOpacity>
+                                    <Text style={styles.label}>Section</Text>
+                                </View>
+                                <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
+                                    <TouchableOpacity style={styles.checkBtn} onPress={() => setTrainingPlace('At home')}>
+                                        {trainingPlace === 'At home' && (
+                                            <View style={{width: 24, height: 24}}>
+                                                <Icons type={'selected'} />
+                                            </View>
+                                        )}
+                                    </TouchableOpacity>
+                                    <Text style={styles.label}>At home</Text>
+                                </View>
+                                <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
+                                    <TouchableOpacity style={styles.checkBtn} onPress={() => setTrainingPlace('Other')}>
+                                        {trainingPlace === 'Other' && (
+                                            <View style={{width: 24, height: 24}}>
+                                                <Icons type={'selected'} />
+                                            </View>
+                                        )}
+                                    </TouchableOpacity>
+                                    <Text style={styles.label}>Other</Text>
+                                </View>
 
-            <TouchableOpacity style={[styles.nextBtn, buttonDisabled() && {backgroundColor: '#261305'}]} onPress={handleNext}>
-                <Text style={[styles.nextBtnText,  buttonDisabled() && {color: '#999'}]}>Continue</Text>
-            </TouchableOpacity>
+                                <Text style={[styles.label, {marginVertical: 20}]}>How often do you train?</Text>
+                                <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
+                                    <TouchableOpacity style={styles.checkBtn} onPress={() => setTrainingFrequency('Once a month')}>
+                                        {trainingFrequency === 'Once a month' && (
+                                            <View style={{width: 24, height: 24}}>
+                                                <Icons type={'selected'} />
+                                            </View>
+                                        )}
+                                    </TouchableOpacity>
+                                    <Text style={styles.label}>Once a month</Text>
+                                </View>
+                                <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
+                                    <TouchableOpacity style={styles.checkBtn} onPress={() => setTrainingFrequency('1-2 times a week')}>
+                                        {trainingFrequency === '1-2 times a week' && (
+                                            <View style={{width: 24, height: 24}}>
+                                                <Icons type={'selected'} />
+                                            </View>
+                                        )}
+                                    </TouchableOpacity>
+                                    <Text style={styles.label}>1-2 times a week</Text>
+                                </View>
+                                <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
+                                    <TouchableOpacity style={styles.checkBtn} onPress={() => setTrainingFrequency('3-4 times a week')}>
+                                        {trainingFrequency === '3-4 times a week' && (
+                                            <View style={{width: 24, height: 24}}>
+                                                <Icons type={'selected'} />
+                                            </View>
+                                        )}
+                                    </TouchableOpacity>
+                                    <Text style={styles.label}>3-4 times a week</Text>
+                                </View>
+                                <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
+                                    <TouchableOpacity style={styles.checkBtn} onPress={() => setTrainingFrequency('More than 4 times a week')}>
+                                        {trainingFrequency === 'More than 4 times a week' && (
+                                            <View style={{width: 24, height: 24}}>
+                                                <Icons type={'selected'} />
+                                            </View>
+                                        )}
+                                    </TouchableOpacity>
+                                    <Text style={styles.label}>More than 4 times a week</Text>
+                                </View>
+                                <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
+                                    <TouchableOpacity style={styles.checkBtn} onPress={() => setTrainingFrequency('Less often')}>
+                                        {trainingFrequency === 'Less often' && (
+                                            <View style={{width: 24, height: 24}}>
+                                                <Icons type={'selected'} />
+                                            </View>
+                                        )}
+                                    </TouchableOpacity>
+                                    <Text style={styles.label}>Less often</Text>
+                                </View>
+                                <View style={{height: 150}} />
+                            </ScrollView>
+                        </View>
+                    )
+                }
+                {
+                    step === 4 && (
+                        <View style={styles.innerContainer}>
+                            <Text style={[styles.label, {marginBottom: 20}]}>What level are you?</Text>
+                            <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
+                                <TouchableOpacity style={styles.checkBtn} onPress={() => setLevel('Beginner')}>
+                                    {level === 'Beginner' && (
+                                        <View style={{width: 24, height: 24}}>
+                                            <Icons type={'selected'} />
+                                        </View>
+                                    )}
+                                </TouchableOpacity>
+                                <Text style={styles.label}>Beginner</Text>
+                            </View>
+                            <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
+                                <TouchableOpacity style={styles.checkBtn} onPress={() => setLevel('Amateur')}>
+                                    {level === 'Amateur' && (
+                                        <View style={{width: 24, height: 24}}>
+                                            <Icons type={'selected'} />
+                                        </View>
+                                    )}
+                                </TouchableOpacity>
+                                <Text style={styles.label}>Amateur</Text>
+                            </View>
+                            <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
+                                <TouchableOpacity style={styles.checkBtn} onPress={() => setLevel('Experienced')}>
+                                    {level === 'Experienced' && (
+                                        <View style={{width: 24, height: 24}}>
+                                            <Icons type={'selected'} />
+                                        </View>
+                                    )}
+                                </TouchableOpacity>
+                                <Text style={styles.label}>Experienced</Text>
+                            </View>
+                            <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
+                                <TouchableOpacity style={styles.checkBtn} onPress={() => setLevel('Athlete')}>
+                                    {level === 'Athlete' && (
+                                        <View style={{width: 24, height: 24}}>
+                                            <Icons type={'selected'} />
+                                        </View>
+                                    )}
+                                </TouchableOpacity>
+                                <Text style={styles.label}>Athlete</Text>
+                            </View>
+                            <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24, zIndex: 10}}>
+                                <TouchableOpacity style={styles.checkBtn} onPress={() => setLevel('Professional')}>
+                                    {level === 'Professional' && (
+                                        <View style={{width: 24, height: 24}}>
+                                            <Icons type={'selected'} />
+                                        </View>
+                                    )}
+                                </TouchableOpacity>
+                                <Text style={styles.label}>Professional</Text>
+                            </View>
 
-        </View>
+                            <Image source={require('../assets/decor/wolf-form2.png')} style={{width: 390, height: 300, resizeMode: 'contain', position: 'absolute', bottom: 20, right: -20}} />
+                        </View>
+                    )
+                }
+                {
+                    step === 5 && (
+                        <View style={styles.innerContainer}>
+                            <ScrollView style={{width: '100%'}}>
+                                <Text style={[styles.label, {marginBottom: 20}]}>Please specify your current goal</Text>
+                                <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
+                                    <TouchableOpacity style={styles.checkBtn} onPress={() => setGoal('Improve physical condition')}>
+                                        {goal === 'Improve physical condition' && (
+                                            <View style={{width: 24, height: 24}}>
+                                                <Icons type={'selected'} />
+                                            </View>
+                                        )}
+                                    </TouchableOpacity>
+                                    <Text style={styles.label}>Improve physical condition</Text>
+                                </View>
+                                <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
+                                    <TouchableOpacity style={styles.checkBtn} onPress={() => setGoal('Gain muscle mass')}>
+                                        {goal === 'Gain muscle mass' && (
+                                            <View style={{width: 24, height: 24}}>
+                                                <Icons type={'selected'} />
+                                            </View>
+                                        )}
+                                    </TouchableOpacity>
+                                    <Text style={styles.label}>Gain muscle mass</Text>
+                                </View>
+                                <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
+                                    <TouchableOpacity style={styles.checkBtn} onPress={() => setGoal('Lose excess weight')}>
+                                        {goal === 'Lose excess weight' && (
+                                            <View style={{width: 24, height: 24}}>
+                                                <Icons type={'selected'} />
+                                            </View>
+                                        )}
+                                    </TouchableOpacity>
+                                    <Text style={styles.label}>Lose excess weight</Text>
+                                </View>
+                                <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
+                                    <TouchableOpacity style={styles.checkBtn} onPress={() => setGoal('Just for fun')}>
+                                        {goal === 'Just for fun' && (
+                                            <View style={{width: 24, height: 24}}>
+                                                <Icons type={'selected'} />
+                                            </View>
+                                        )}
+                                    </TouchableOpacity>
+                                    <Text style={styles.label}>Just for fun</Text>
+                                </View>
+                                <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
+                                    <TouchableOpacity style={styles.checkBtn} onPress={() => setGoal('Other')}>
+                                        {goal === 'Other' && (
+                                            <View style={{width: 24, height: 24}}>
+                                                <Icons type={'selected'} />
+                                            </View>
+                                        )}
+                                    </TouchableOpacity>
+                                    <Text style={styles.label}>Other</Text>
+                                </View>
+
+                                <Text style={[styles.label, {marginVertical: 20}]}>How long do you want to achieve your goal?</Text>
+                                <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
+                                    <TouchableOpacity style={styles.checkBtn} onPress={() => setGoalTermin('1-2 months')}>
+                                        {goalTermin === '1-2 months' && (
+                                            <View style={{width: 24, height: 24}}>
+                                                <Icons type={'selected'} />
+                                            </View>
+                                        )}
+                                    </TouchableOpacity>
+                                    <Text style={styles.label}>1-2 months</Text>
+                                </View>
+                                <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
+                                    <TouchableOpacity style={styles.checkBtn} onPress={() => setGoalTermin('3-6 months')}>
+                                        {goalTermin === '3-6 months' && (
+                                            <View style={{width: 24, height: 24}}>
+                                                <Icons type={'selected'} />
+                                            </View>
+                                        )}
+                                    </TouchableOpacity>
+                                    <Text style={styles.label}>3-6 months</Text>
+                                </View>
+                                <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
+                                    <TouchableOpacity style={styles.checkBtn} onPress={() => setGoalTermin('Half a year to a year')}>
+                                        {goalTermin === 'Half a year to a year' && (
+                                            <View style={{width: 24, height: 24}}>
+                                                <Icons type={'selected'} />
+                                            </View>
+                                        )}
+                                    </TouchableOpacity>
+                                    <Text style={styles.label}>Half a year to a year</Text>
+                                </View>
+                                <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
+                                    <TouchableOpacity style={styles.checkBtn} onPress={() => setGoalTermin('More than a year')}>
+                                        {goalTermin === 'More than a year' && (
+                                            <View style={{width: 24, height: 24}}>
+                                                <Icons type={'selected'} />
+                                            </View>
+                                        )}
+                                    </TouchableOpacity>
+                                    <Text style={styles.label}>More than a year</Text>
+                                </View>
+                                <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', marginBottom: 24}}>
+                                    <TouchableOpacity style={styles.checkBtn} onPress={() => setGoalTermin('Other')}>
+                                        {goalTermin === 'Other' && (
+                                            <View style={{width: 24, height: 24}}>
+                                                <Icons type={'selected'} />
+                                            </View>
+                                        )}
+                                    </TouchableOpacity>
+                                    <Text style={styles.label}>Other</Text>
+                                </View>
+                                <View style={{height: 150}} />
+                            </ScrollView>
+                        </View>
+                    )
+                }
+                {
+                    step === 6 && (
+                        <View style={styles.innerContainer}>
+                            <ScrollView style={{width: '100%'}}>
+                                {
+                                    programs.map((program, index) => (
+                                        <TouchableOpacity 
+                                            style={[styles.programCard, selectedProgram === program && {backgroundColor: '#731de5'}]} 
+                                            key={index} 
+                                            onPress={() => setSelectedProgram(program)}
+                                            >
+                                            <View style={{width: '48%', justifyContent: 'space-between', height: '100%'}}>
+                                                <Text style={styles.programTitle}>{program.title}</Text>
+                                                <Text style={styles.programDesc} numberOfLines={3} ellipsizeMode="tail">{program.description}</Text>
+                                            </View>
+                                            <Image style={styles.programImage} source={program.image} />
+                                        </TouchableOpacity>
+                                    ))
+                                }
+                                <View style={{height: 150}} />
+                            </ScrollView>
+                        </View>
+                    )
+                }
+
+                <TouchableOpacity style={[styles.nextBtn, buttonDisabled() && {backgroundColor: '#261305'}]} onPress={handleNext}>
+                    <Text style={[styles.nextBtnText,  buttonDisabled() && {color: '#999'}]}>Continue</Text>
+                </TouchableOpacity>
+
+                </View>
+        </ImageBackground>
     );
 };
 
@@ -533,7 +535,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: "center",
-        backgroundColor: "#2a165c",
         padding: 16,
         paddingTop: height * 0.07
     },

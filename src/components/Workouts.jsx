@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, TouchableOpacity, Text, ScrollView, Dimensions, StyleSheet, ActivityIndicator } from "react-native"
+import { View, TouchableOpacity, Text, ScrollView, Dimensions, StyleSheet, ActivityIndicator, ImageBackground } from "react-native"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from "@react-navigation/native";
 import Icons from "./Icons";
@@ -110,77 +110,79 @@ const Workouts = ({ workout }) => {
     };
 
     return (
-        <View style={styles.container}>
+        <ImageBackground source={require('../assets/back.png')} style={{flex: 1}}>
+            <View style={styles.container}>
 
-            <View style={{width: '100%', alignItems: 'center', justifyContent: 'flex-start', flexDirection: 'row', marginBottom: 27}}>
-                <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={() => navigation.goBack('')}>
-                    <View style={{width: 13, height: 20, marginRight: 10}}>
-                        <Icons type={'back'} />
-                    </View>
-                    <Text style={styles.backBtnText}>Back</Text>
-                </TouchableOpacity>
-                <Text style={styles.title}>{workout.title}</Text>
-            </View>
-
-            <View style={{width: '100%', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', marginBottom: 16}}>
-                <Text style={styles.workoutDesc}>{date}</Text>
-                {isStarted && <Text style={styles.timer}>{formatTime(timeLeft)}</Text>}
-                <Text style={styles.workoutDesc}>{workout.duration} min</Text>
-            </View>
-
-            <ScrollView style={{width: '100%'}}>
-                {
-                    workout.exercises.map((item, index) => (
-                        <TouchableOpacity 
-                            style={styles.workoutCard}
-                            key={index}
-                            >
-                            <View style={{width: 52, height: 52, marginRight: 16}}>
-                                <Icons type={'workout'} />
-                            </View>
-                            <View style={{width: '78%'}}>
-                                <Text style={styles.workoutTitle}>{item.name}</Text>
-                                <Text style={styles.workoutDesc}>{item.description}</Text>
-                                {item.exDuration && <Text style={styles.workoutDesc}>{item.exDuration} / {item.repetitions} reps / {item.sets} sets</Text>}
-                            </View>
-
-                            {
-                                isStarted && (
-                                    <>
-                                        {exerciseIndex === index && timeLeft > 0 && (
-                                            <ActivityIndicator size="small" color="#731de5" marginLeft={-20} />
-                                        )}
-                                    </>
-                                )
-                            }
-
-                        </TouchableOpacity>    
-                    ))
-                }               
-                <View style={{height: 100}} />
-            </ScrollView>
-
-            {
-                isStarted ? (
-                    <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', position: 'absolute', bottom: 30}}>
-                        <TouchableOpacity style={styles.toolBtn} onPress={handleStop}>
-                            <Icons type={'stop'} />
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.toolBtn} onPress={handlePause}>
-                            <Icons type={'pause'} />
-                        </TouchableOpacity>
-                        <TouchableOpacity style={[styles.startBtn, {width: '60%'}]} onPress={handlePause}>
-                            <Text style={styles.startBtnText}>{isPaused ? 'Continue' : 'In process'}</Text>
-                        </TouchableOpacity>
-                    </View>
-                ) : (
-                    <TouchableOpacity style={[styles.startBtn, {position: 'absolute', bottom: 30}]} onPress={isCompleted ? handleRestart() : handleStart()}>
-                        <Text style={styles.startBtnText}>{isCompleted ? 'Restart' : 'Start'}</Text>
+                <View style={{width: '100%', alignItems: 'center', justifyContent: 'flex-start', flexDirection: 'row', marginBottom: 27}}>
+                    <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={() => navigation.goBack('')}>
+                        <View style={{width: 13, height: 20, marginRight: 10}}>
+                            <Icons type={'back'} />
+                        </View>
+                        <Text style={styles.backBtnText}>Back</Text>
                     </TouchableOpacity>
-                )
-            }
+                    <Text style={styles.title}>{workout.title}</Text>
+                </View>
 
-        </View>
+                <View style={{width: '100%', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', marginBottom: 16}}>
+                    <Text style={styles.workoutDesc}>{date}</Text>
+                    {isStarted && <Text style={styles.timer}>{formatTime(timeLeft)}</Text>}
+                    <Text style={styles.workoutDesc}>{workout.duration} min</Text>
+                </View>
+
+                <ScrollView style={{width: '100%'}}>
+                    {
+                        workout.exercises.map((item, index) => (
+                            <TouchableOpacity 
+                                style={styles.workoutCard}
+                                key={index}
+                                >
+                                <View style={{width: 52, height: 52, marginRight: 16}}>
+                                    <Icons type={'workout'} />
+                                </View>
+                                <View style={{width: '78%'}}>
+                                    <Text style={styles.workoutTitle}>{item.name}</Text>
+                                    <Text style={styles.workoutDesc}>{item.description}</Text>
+                                    {item.exDuration && <Text style={styles.workoutDesc}>{item.exDuration} / {item.repetitions} reps / {item.sets} sets</Text>}
+                                </View>
+
+                                {
+                                    isStarted && (
+                                        <>
+                                            {exerciseIndex === index && timeLeft > 0 && (
+                                                <ActivityIndicator size="small" color="#731de5" marginLeft={-20} />
+                                            )}
+                                        </>
+                                    )
+                                }
+
+                            </TouchableOpacity>    
+                        ))
+                    }               
+                    <View style={{height: 100}} />
+                </ScrollView>
+
+                {
+                    isStarted ? (
+                        <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', position: 'absolute', bottom: 30}}>
+                            <TouchableOpacity style={styles.toolBtn} onPress={handleStop}>
+                                <Icons type={'stop'} />
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.toolBtn} onPress={handlePause}>
+                                <Icons type={'pause'} />
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.startBtn, {width: '60%'}]} onPress={handlePause}>
+                                <Text style={styles.startBtnText}>{isPaused ? 'Continue' : 'In process'}</Text>
+                            </TouchableOpacity>
+                        </View>
+                    ) : (
+                        <TouchableOpacity style={[styles.startBtn, {position: 'absolute', bottom: 30}]} onPress={isCompleted ? handleRestart() : handleStart()}>
+                            <Text style={styles.startBtnText}>{isCompleted ? 'Restart' : 'Start'}</Text>
+                        </TouchableOpacity>
+                    )
+                }
+
+                </View>
+        </ImageBackground>
     )
 };
 
@@ -189,7 +191,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: "center",
-        backgroundColor: "#2a165c",
         padding: 16,
         paddingTop: height * 0.07
     },

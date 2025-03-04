@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, TextInput, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, TextInput, ScrollView, ImageBackground } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from "@react-navigation/native";
@@ -73,94 +73,96 @@ const AddMeal = () => {
     };
         
     return (
-        <View style={styles.container}>
+        <ImageBackground source={require('../assets/back.png')} style={{flex: 1}}>
+            <View style={styles.container}>
 
-            <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', marginBottom: 27}} onPress={() => navigation.goBack('')}>
-                <View style={{width: 13, height: 20, marginRight: 10}}>
-                    <Icons type={'back'} />
-                </View>
-                <Text style={styles.backBtnText}>Back</Text>
-            </TouchableOpacity>
-
-            <Text style={styles.title}>Add meal</Text>
-
-            <ScrollView style={{width: '100%'}}>
-                <Text style={styles.label}>Name</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="What will you call it?"
-                    placeholderTextColor="#999"
-                    value={name}
-                    onChangeText={setName}
-                />
-
-                <Text style={styles.label}>Exercises</Text>
-                    <View style={{ width: "100%", marginBottom: 12 }}>
-                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                            <TextInput
-                                style={[styles.input, {width: '48.5%'}]}
-                                placeholder="Size, g"
-                                placeholderTextColor="#999"
-                                value={grams}
-                                onChangeText={setGrams}
-                            />
-                            <TextInput
-                                style={[styles.input, {width: '48.5%'}]}
-                                placeholder="Kcal"
-                                placeholderTextColor="#999"
-                                value={calories}
-                                onChangeText={setCalories}
-                            />
-                        </View>
-                        <View style={{ width: "100%", flexDirection: "row", justifyContent: "space-between" }}>
-                            <TextInput
-                                style={[styles.input, {width: '40%'}]}
-                                placeholder="Carbohydrates"
-                                placeholderTextColor="#999"
-                                value={carbo}
-                                onChangeText={setCarbo}
-                            />
-                            <TextInput
-                                style={[styles.input, {width: '28%'}]}
-                                placeholder="Proteins"
-                                placeholderTextColor="#999"
-                                value={proteins}
-                                onChangeText={setProteins}
-                            />
-                            <TextInput
-                                style={[styles.input, {width: '26%'}]}
-                                placeholder="Fats"
-                                placeholderTextColor="#999"
-                                value={fats}
-                                onChangeText={setFats}
-                            />
-                        </View>
+                <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', marginBottom: 27}} onPress={() => navigation.goBack('')}>
+                    <View style={{width: 13, height: 20, marginRight: 10}}>
+                        <Icons type={'back'} />
                     </View>
-
-                <Text style={styles.label}>Time of intake</Text>
-                <TouchableOpacity style={styles.indicatorBrn} onPress={handleTimeToggle}>
-                    <Text style={styles.indicatorBrnText}>{time ? time : 'XX:XX'}</Text>
+                    <Text style={styles.backBtnText}>Back</Text>
                 </TouchableOpacity>
 
-                {selectTime !== false && (
-                    <DateTimePicker
-                        value={new Date()}
-                        mode="time"
-                        themeVariant="dark"
-                        is24Hour={false}
-                        display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                        onChange={handleSelectTime}
+                <Text style={styles.title}>Add meal</Text>
+
+                <ScrollView style={{width: '100%'}}>
+                    <Text style={styles.label}>Name</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="What will you call it?"
+                        placeholderTextColor="#999"
+                        value={name}
+                        onChangeText={setName}
                     />
-                )}
 
-                <View style={{height: 100}} />
-            </ScrollView>
+                    <Text style={styles.label}>Exercises</Text>
+                        <View style={{ width: "100%", marginBottom: 12 }}>
+                            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                <TextInput
+                                    style={[styles.input, {width: '48.5%'}]}
+                                    placeholder="Size, g"
+                                    placeholderTextColor="#999"
+                                    value={grams}
+                                    onChangeText={setGrams}
+                                />
+                                <TextInput
+                                    style={[styles.input, {width: '48.5%'}]}
+                                    placeholder="Kcal"
+                                    placeholderTextColor="#999"
+                                    value={calories}
+                                    onChangeText={setCalories}
+                                />
+                            </View>
+                            <View style={{ width: "100%", flexDirection: "row", justifyContent: "space-between" }}>
+                                <TextInput
+                                    style={[styles.input, {width: '40%'}]}
+                                    placeholder="Carbohydrates"
+                                    placeholderTextColor="#999"
+                                    value={carbo}
+                                    onChangeText={setCarbo}
+                                />
+                                <TextInput
+                                    style={[styles.input, {width: '28%'}]}
+                                    placeholder="Proteins"
+                                    placeholderTextColor="#999"
+                                    value={proteins}
+                                    onChangeText={setProteins}
+                                />
+                                <TextInput
+                                    style={[styles.input, {width: '26%'}]}
+                                    placeholder="Fats"
+                                    placeholderTextColor="#999"
+                                    value={fats}
+                                    onChangeText={setFats}
+                                />
+                            </View>
+                        </View>
 
-            <TouchableOpacity style={styles.saveBtn} onPress={handleSave}>
-                <Text style={styles.saveBtnText}>Save</Text>
-            </TouchableOpacity>
+                    <Text style={styles.label}>Time of intake</Text>
+                    <TouchableOpacity style={styles.indicatorBrn} onPress={handleTimeToggle}>
+                        <Text style={styles.indicatorBrnText}>{time ? time : 'XX:XX'}</Text>
+                    </TouchableOpacity>
 
-        </View>
+                    {selectTime !== false && (
+                        <DateTimePicker
+                            value={new Date()}
+                            mode="time"
+                            themeVariant="dark"
+                            is24Hour={false}
+                            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                            onChange={handleSelectTime}
+                        />
+                    )}
+
+                    <View style={{height: 100}} />
+                </ScrollView>
+
+                <TouchableOpacity style={styles.saveBtn} onPress={handleSave}>
+                    <Text style={styles.saveBtnText}>Save</Text>
+                </TouchableOpacity>
+
+                </View>
+        </ImageBackground>
     );
 };
 
@@ -168,7 +170,6 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        backgroundColor: "#2a165c",
         padding: 16,
         paddingTop: height * 0.07
     },

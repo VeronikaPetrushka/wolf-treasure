@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, TouchableOpacity, Text, ScrollView, Image, Dimensions, StyleSheet } from "react-native"
+import { View, TouchableOpacity, Text, ScrollView, ImageBackground, Dimensions, StyleSheet } from "react-native"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from "@react-navigation/native";
 import { format } from "date-fns";
@@ -63,52 +63,54 @@ const Food = () => {
     }, [selectedDate, dates]);
 
     return (
-        <View style={styles.container}>
+        <ImageBackground source={require('../assets/back.png')} style={{flex: 1}}>
+            <View style={styles.container}>
 
-            <Text style={styles.upperTitle}>Dietary plan</Text>
+                <Text style={styles.upperTitle}>Dietary plan</Text>
 
-            <View style={styles.datesContainer}>
-                <ScrollView 
-                    horizontal 
-                    showsHorizontalScrollIndicator={false} 
-                    style={{ flexDirection: "row" }}
-                    ref={scrollViewRef}
-                    >
-                    {dates.map((date, index) => (
-                        <TouchableOpacity 
-                            key={index} 
-                            style={[styles.dateBox, selectedDate.toDateString() === date.toDateString() && {backgroundColor: '#731de5'}]} 
-                            onPress={() => setSelectedDate(date)}
-                            >
-                            <Text style={styles.dateText}>{format(date, 'eee, dd')}</Text>
-                            <Text style={styles.monthText}>{format(date, 'MMM')}</Text>
-                        </TouchableOpacity>
-                    ))}
+                <View style={styles.datesContainer}>
+                    <ScrollView 
+                        horizontal 
+                        showsHorizontalScrollIndicator={false} 
+                        style={{ flexDirection: "row" }}
+                        ref={scrollViewRef}
+                        >
+                        {dates.map((date, index) => (
+                            <TouchableOpacity 
+                                key={index} 
+                                style={[styles.dateBox, selectedDate.toDateString() === date.toDateString() && {backgroundColor: '#731de5'}]} 
+                                onPress={() => setSelectedDate(date)}
+                                >
+                                <Text style={styles.dateText}>{format(date, 'eee, dd')}</Text>
+                                <Text style={styles.monthText}>{format(date, 'MMM')}</Text>
+                            </TouchableOpacity>
+                        ))}
+                    </ScrollView>
+                </View>
+
+                <ScrollView style={{width: '100%'}}>
+                {
+                    filteredFood.length > 0 && (
+                        filteredFood.map((meal, index) => (
+                            <View key={index} style={{width: '100%', marginBottom: 20}}>
+                                <Text style={styles.foodTime}>{meal.time}</Text>
+                                <View style={styles.foodCard}>
+                                    <Text style={styles.foodName}>{meal.name}</Text>
+                                    <Text style={styles.foodDesc}>{meal.grams}g / {meal.calories} kcal / {meal.carbo} carbs / {meal.proteins} proteins / {meal.fats} fats</Text>
+                                </View>  
+                            </View>
+                        ))
+                    )
+                }
+                <View style={{height: 150}} />
                 </ScrollView>
-            </View>
 
-            <ScrollView style={{width: '100%'}}>
-            {
-                filteredFood.length > 0 && (
-                    filteredFood.map((meal, index) => (
-                        <View key={index} style={{width: '100%', marginBottom: 20}}>
-                            <Text style={styles.foodTime}>{meal.time}</Text>
-                            <View style={styles.foodCard}>
-                                <Text style={styles.foodName}>{meal.name}</Text>
-                                <Text style={styles.foodDesc}>{meal.grams}g / {meal.calories} kcal / {meal.carbo} carbs / {meal.proteins} proteins / {meal.fats} fats</Text>
-                            </View>  
-                        </View>
-                    ))
-                )
-            }
-               <View style={{height: 150}} />
-            </ScrollView>
+                <TouchableOpacity style={styles.addBtn} onPress={() => navigation.navigate('AddMealScreen')}>
+                    <Icons type={'add'} />
+                </TouchableOpacity>
 
-            <TouchableOpacity style={styles.addBtn} onPress={() => navigation.navigate('AddMealScreen')}>
-                <Icons type={'add'} />
-            </TouchableOpacity>
-
-        </View>
+                </View>
+        </ImageBackground>
     )
 };
 
@@ -117,7 +119,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: "center",
-        backgroundColor: "#2a165c",
         padding: 16,
         paddingTop: height * 0.07
     },

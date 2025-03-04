@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, TextInput, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, TextInput, ScrollView, ImageBackground } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from "@react-navigation/native";
@@ -129,147 +129,149 @@ const AddWorkout = () => {
     };
         
     return (
-        <View style={styles.container}>
+        <ImageBackground source={require('../assets/back.png')} style={{flex: 1}}>
+            <View style={styles.container}>
 
-            <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', marginBottom: 27}} onPress={() => navigation.goBack('')}>
-                <View style={{width: 13, height: 20, marginRight: 10}}>
-                    <Icons type={'back'} />
-                </View>
-                <Text style={styles.backBtnText}>Back</Text>
-            </TouchableOpacity>
-
-            <Text style={styles.title}>Add workout</Text>
-
-            <View style={styles.toggleContainer}>
-                <TouchableOpacity style={[styles.toggleBtn, when === 'Schedule' && {backgroundColor: '#731de5'}]} onPress={() => setWhen('Schedule')}>
-                    <Text style={styles.toggleBtnText}>Schedule</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.toggleBtn, when === 'Past' && {backgroundColor: '#731de5'}]} onPress={() => setWhen('Past')}>
-                    <Text style={styles.toggleBtnText}>Past</Text>
-                </TouchableOpacity>
-            </View>
-
-            <ScrollView style={{width: '100%'}}>
-                <Text style={styles.label}>Name</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="What will you call it?"
-                    placeholderTextColor="#999"
-                    value={name}
-                    onChangeText={setName}
-                />
-
-                <Text style={styles.label}>Calories</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Enter a number"
-                    placeholderTextColor="#999"
-                    value={calories}
-                    onChangeText={setCalories}
-                />
-
-                <Text style={styles.label}>Workout duration</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="In minutes"
-                    placeholderTextColor="#999"
-                    value={duration}
-                    onChangeText={setDuration}
-                />
-
-                <Text style={styles.label}>Exercises</Text>
-                {exercises.map((exercise, index) => (
-                    <View key={index} style={{ width: "100%", marginBottom: 12 }}>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Exercise name"
-                            placeholderTextColor="#999"
-                            value={exercise.name}
-                            onChangeText={(text) => {
-                                const newExercises = [...exercises];
-                                newExercises[index].name = text;
-                                setExercises(newExercises);
-                            }}
-                        />
-                        <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between" }}>
-                            <TextInput
-                                style={[styles.input, { width: "48.5%", textAlign: "center" }]}
-                                placeholder="Repetitions"
-                                placeholderTextColor="#999"
-                                value={exercise.repetitions}
-                                onChangeText={(text) => {
-                                    const newExercises = [...exercises];
-                                    newExercises[index].repetitions = text;
-                                    setExercises(newExercises);
-                                }}
-                            />
-                            <TextInput
-                                style={[styles.input, { width: "48.5%", textAlign: "center" }]}
-                                placeholder="Sets"
-                                placeholderTextColor="#999"
-                                value={exercise.sets}
-                                onChangeText={(text) => {
-                                    const newExercises = [...exercises];
-                                    newExercises[index].sets = text;
-                                    setExercises(newExercises);
-                                }}
-                            />
-                            <TouchableOpacity style={styles.exBtn} onPress={() => handleDurationToggle(index)}>
-                                <Text style={styles.exBtnText}>{exercise.exDuration ? exercise.exDuration : "Duration hh:mm"}</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.exBtn} onPress={() => handleRestToggle(index)}>
-                                <Text style={styles.exBtnText}>{exercise.rest ? exercise.rest : "Rest mm:ss"}</Text>
-                            </TouchableOpacity>
-                        </View>
+                <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', marginBottom: 27}} onPress={() => navigation.goBack('')}>
+                    <View style={{width: 13, height: 20, marginRight: 10}}>
+                        <Icons type={'back'} />
                     </View>
-                ))}
+                    <Text style={styles.backBtnText}>Back</Text>
+                </TouchableOpacity>
 
-                {selectDuration !== false && (
-                    <DateTimePicker
-                        value={new Date()}
-                        mode="time"
-                        themeVariant="dark"
-                        is24Hour={true}
-                        display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                        onChange={(event, selectedTime) => handleDurationChange(event, selectedTime, selectDuration)}
-                    />
-                )}
-                {selectRest !== false && (
-                    <DateTimePicker
-                        value={new Date()}
-                        mode="time"
-                        themeVariant="dark"
-                        is24Hour={true}
-                        display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                        onChange={(event, selectedTime) => handleSelectRest(event, selectedTime, selectRest)}
-                    />
-                )}
+                <Text style={styles.title}>Add workout</Text>
 
-                <Text style={styles.backBtnText} onPress={handleAddExercise}>+ Add exercise</Text>
-
-                <View style={styles.datesContainer}>
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ flexDirection: "row" }}>
-                        {dates.map((date, index) => (
-                            <TouchableOpacity 
-                                key={index} 
-                                style={[styles.dateBox, selectedDate === date && {backgroundColor: '#731de5'}]} 
-                                onPress={() => setSelectedDate(date)}
-                                >
-                                <Text style={styles.dateText}>{format(date, 'eee, dd')}</Text>
-                                <Text style={styles.monthText}>{format(date, 'MMM')}</Text>
-                            </TouchableOpacity>
-                        ))}
-                    </ScrollView>
+                <View style={styles.toggleContainer}>
+                    <TouchableOpacity style={[styles.toggleBtn, when === 'Schedule' && {backgroundColor: '#731de5'}]} onPress={() => setWhen('Schedule')}>
+                        <Text style={styles.toggleBtnText}>Schedule</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.toggleBtn, when === 'Past' && {backgroundColor: '#731de5'}]} onPress={() => setWhen('Past')}>
+                        <Text style={styles.toggleBtnText}>Past</Text>
+                    </TouchableOpacity>
                 </View>
 
-                <View style={{height: 100}} />
-            </ScrollView>
+                <ScrollView style={{width: '100%'}}>
+                    <Text style={styles.label}>Name</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="What will you call it?"
+                        placeholderTextColor="#999"
+                        value={name}
+                        onChangeText={setName}
+                    />
 
-            <TouchableOpacity style={styles.saveBtn} onPress={handleSave}>
-                <Text style={styles.saveBtnText}>Save</Text>
-            </TouchableOpacity>
+                    <Text style={styles.label}>Calories</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Enter a number"
+                        placeholderTextColor="#999"
+                        value={calories}
+                        onChangeText={setCalories}
+                    />
 
-        </View>
+                    <Text style={styles.label}>Workout duration</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="In minutes"
+                        placeholderTextColor="#999"
+                        value={duration}
+                        onChangeText={setDuration}
+                    />
+
+                    <Text style={styles.label}>Exercises</Text>
+                    {exercises.map((exercise, index) => (
+                        <View key={index} style={{ width: "100%", marginBottom: 12 }}>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Exercise name"
+                                placeholderTextColor="#999"
+                                value={exercise.name}
+                                onChangeText={(text) => {
+                                    const newExercises = [...exercises];
+                                    newExercises[index].name = text;
+                                    setExercises(newExercises);
+                                }}
+                            />
+                            <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between" }}>
+                                <TextInput
+                                    style={[styles.input, { width: "48.5%", textAlign: "center" }]}
+                                    placeholder="Repetitions"
+                                    placeholderTextColor="#999"
+                                    value={exercise.repetitions}
+                                    onChangeText={(text) => {
+                                        const newExercises = [...exercises];
+                                        newExercises[index].repetitions = text;
+                                        setExercises(newExercises);
+                                    }}
+                                />
+                                <TextInput
+                                    style={[styles.input, { width: "48.5%", textAlign: "center" }]}
+                                    placeholder="Sets"
+                                    placeholderTextColor="#999"
+                                    value={exercise.sets}
+                                    onChangeText={(text) => {
+                                        const newExercises = [...exercises];
+                                        newExercises[index].sets = text;
+                                        setExercises(newExercises);
+                                    }}
+                                />
+                                <TouchableOpacity style={styles.exBtn} onPress={() => handleDurationToggle(index)}>
+                                    <Text style={styles.exBtnText}>{exercise.exDuration ? exercise.exDuration : "Duration hh:mm"}</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.exBtn} onPress={() => handleRestToggle(index)}>
+                                    <Text style={styles.exBtnText}>{exercise.rest ? exercise.rest : "Rest mm:ss"}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    ))}
+
+                    {selectDuration !== false && (
+                        <DateTimePicker
+                            value={new Date()}
+                            mode="time"
+                            themeVariant="dark"
+                            is24Hour={true}
+                            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                            onChange={(event, selectedTime) => handleDurationChange(event, selectedTime, selectDuration)}
+                        />
+                    )}
+                    {selectRest !== false && (
+                        <DateTimePicker
+                            value={new Date()}
+                            mode="time"
+                            themeVariant="dark"
+                            is24Hour={true}
+                            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                            onChange={(event, selectedTime) => handleSelectRest(event, selectedTime, selectRest)}
+                        />
+                    )}
+
+                    <Text style={styles.backBtnText} onPress={handleAddExercise}>+ Add exercise</Text>
+
+                    <View style={styles.datesContainer}>
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ flexDirection: "row" }}>
+                            {dates.map((date, index) => (
+                                <TouchableOpacity 
+                                    key={index} 
+                                    style={[styles.dateBox, selectedDate === date && {backgroundColor: '#731de5'}]} 
+                                    onPress={() => setSelectedDate(date)}
+                                    >
+                                    <Text style={styles.dateText}>{format(date, 'eee, dd')}</Text>
+                                    <Text style={styles.monthText}>{format(date, 'MMM')}</Text>
+                                </TouchableOpacity>
+                            ))}
+                        </ScrollView>
+                    </View>
+
+                    <View style={{height: 100}} />
+                </ScrollView>
+
+                <TouchableOpacity style={styles.saveBtn} onPress={handleSave}>
+                    <Text style={styles.saveBtnText}>Save</Text>
+                </TouchableOpacity>
+
+                </View>
+        </ImageBackground>
     );
 };
 
@@ -277,7 +279,6 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        backgroundColor: "#2a165c",
         padding: 16,
         paddingTop: height * 0.07
     },

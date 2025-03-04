@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, Text, ScrollView, Image, Dimensions, StyleSheet, Share } from "react-native"
+import { View, TouchableOpacity, Text, ScrollView, Image, Dimensions, StyleSheet, Share, ImageBackground } from "react-native"
 import { useNavigation } from "@react-navigation/native";
 import articles from "../constants/articles";
 import Icons from "./Icons";
@@ -19,33 +19,35 @@ const Articles = () => {
     };
 
     return (
-        <View style={styles.container}>
+        <ImageBackground source={require('../assets/back.png')} style={{flex: 1}}>
+            <View style={styles.container}>
 
-            <Text style={styles.upperTitle}>Helpful articles</Text>
+                <Text style={styles.upperTitle}>Helpful articles</Text>
 
-             <ScrollView style={{width: '100%', flexGrow: 1}} contentContainerStyle={{flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap'}}>
-                {
-                    articles.map((article, index) => (
-                        <TouchableOpacity 
-                            key={index} 
-                            style={styles.articleCard}
-                            onPress={() => navigation.navigate('ArticleDetailsScreen', {article: article})}
-                            >
-                            <Image source={article.image} style={styles.articleImage} />
-                            <View style={{width: '100%', flexGrow: 1, padding: 10}}>
-                                <View style={{width: '100%', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row'}}>
-                                    <Text style={styles.articleTitle} numberOfLines={1} ellipsizeMode="tail">{article.title}</Text>
-                                    <TouchableOpacity style={{width: 38, height: 35, padding: 10}} onPress={() => handleShare(article)}>
-                                        <Icons type={'share'} />
-                                    </TouchableOpacity>
+                <ScrollView style={{width: '100%', flexGrow: 1}} contentContainerStyle={{flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap'}}>
+                    {
+                        articles.map((article, index) => (
+                            <TouchableOpacity 
+                                key={index} 
+                                style={styles.articleCard}
+                                onPress={() => navigation.navigate('ArticleDetailsScreen', {article: article})}
+                                >
+                                <Image source={article.image} style={styles.articleImage} />
+                                <View style={{width: '100%', flexGrow: 1, padding: 10}}>
+                                    <View style={{width: '100%', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row'}}>
+                                        <Text style={styles.articleTitle} numberOfLines={1} ellipsizeMode="tail">{article.title}</Text>
+                                        <TouchableOpacity style={{width: 38, height: 35, padding: 10}} onPress={() => handleShare(article)}>
+                                            <Icons type={'share'} />
+                                        </TouchableOpacity>
+                                    </View>
+                                    <Text style={styles.articleContent} numberOfLines={1} ellipsizeMode="tail">{article.content}</Text>
                                 </View>
-                                <Text style={styles.articleContent} numberOfLines={1} ellipsizeMode="tail">{article.content}</Text>
-                            </View>
-                        </TouchableOpacity>
-                    ))
-                }
-             </ScrollView>
-        </View>
+                            </TouchableOpacity>
+                        ))
+                    }
+                </ScrollView>
+                </View>
+        </ImageBackground>
     )
 };
 
@@ -54,7 +56,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: "center",
-        backgroundColor: "#2a165c",
         padding: 16,
         paddingTop: height * 0.07,
         paddingBottom: 100

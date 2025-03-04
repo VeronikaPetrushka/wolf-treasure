@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, TouchableOpacity, Text, ScrollView, Image, Dimensions, StyleSheet } from "react-native"
+import { View, TouchableOpacity, Text, ScrollView, Image, Dimensions, StyleSheet, ImageBackground } from "react-native"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from "@react-navigation/native";
 import { format } from "date-fns";
@@ -85,117 +85,119 @@ const Gym = () => {
     }, [selectedDate, dates]);
 
     return (
-        <View style={styles.container}>
+        <ImageBackground source={require('../assets/back.png')} style={{flex: 1}}>
+            <View style={styles.container}>
 
-            <Text style={styles.upperTitle}>Wolf Fit Plus</Text>
+                <Text style={styles.upperTitle}>Wolf Fit Plus</Text>
 
-            <View style={styles.datesContainer}>
-                <ScrollView 
-                    horizontal 
-                    showsHorizontalScrollIndicator={false} 
-                    style={{ flexDirection: "row" }}
-                    ref={scrollViewRef}
-                    >
-                    {dates.map((date, index) => (
-                        <TouchableOpacity 
-                            key={index} 
-                            style={[styles.dateBox, selectedDate.toDateString() === date.toDateString() && {backgroundColor: '#731de5'}]} 
-                            onPress={() => setSelectedDate(date)}
-                            >
-                            <Text style={styles.dateText}>{format(date, 'eee, dd')}</Text>
-                            <Text style={styles.monthText}>{format(date, 'MMM')}</Text>
-                        </TouchableOpacity>
-                    ))}
+                <View style={styles.datesContainer}>
+                    <ScrollView 
+                        horizontal 
+                        showsHorizontalScrollIndicator={false} 
+                        style={{ flexDirection: "row" }}
+                        ref={scrollViewRef}
+                        >
+                        {dates.map((date, index) => (
+                            <TouchableOpacity 
+                                key={index} 
+                                style={[styles.dateBox, selectedDate.toDateString() === date.toDateString() && {backgroundColor: '#731de5'}]} 
+                                onPress={() => setSelectedDate(date)}
+                                >
+                                <Text style={styles.dateText}>{format(date, 'eee, dd')}</Text>
+                                <Text style={styles.monthText}>{format(date, 'MMM')}</Text>
+                            </TouchableOpacity>
+                        ))}
+                    </ScrollView>
+                </View>
+
+                <ScrollView style={{width: '100%'}}>
+                    {
+                        userData?.selectedProgram && (
+                            <View style={{width: '100%'}}>
+                                <Text style={styles.label}>Workouts</Text>
+                                {
+                                    userData?.selectedProgram.workouts.map((workout, index) => (
+                                        <TouchableOpacity 
+                                            style={styles.workoutCard}
+                                            onPress={() => navigation.navigate('WorkoutsScreen', {workout: workout})}
+                                            key={index}
+                                            >
+                                            <View style={{width: 52, height: 52, marginRight: 16}}>
+                                                <Icons type={'workout'} />
+                                            </View>
+                                            <View style={{height: '100%', justifyContent: 'space-between'}}>
+                                                <Text style={styles.workoutTitle}>{workout.title}</Text>
+                                                <Text style={styles.workoutDesc}>{workout.duration} min / {workout.exercises.length} workouts</Text>
+                                            </View>
+                                        </TouchableOpacity>    
+                                    ))
+                                }
+                                {
+                                    filteredWorkouts?.map((workout, index) => (
+                                        <TouchableOpacity 
+                                            style={styles.workoutCard}
+                                            onPress={() => navigation.navigate('WorkoutsScreen', {workout: workout})}
+                                            key={index}
+                                            >
+                                            <View style={{width: 52, height: 52, marginRight: 16}}>
+                                                <Icons type={'workout'} />
+                                            </View>
+                                            <View style={{height: '100%', justifyContent: 'space-between'}}>
+                                                <Text style={styles.workoutTitle}>{workout.name}</Text>
+                                                <Text style={styles.workoutDesc}>{workout.duration} min / {workout.exercises.length} workouts</Text>
+                                            </View>
+                                        </TouchableOpacity>  
+                                    ))
+                                }
+                            </View>
+                        ) 
+                    }
+                    {
+                        filteredHistory.length > 0 && (
+                            <View style={{width: '100%'}}>
+                                <Text style={styles.label}>Workout History</Text>
+                                {
+                                    filteredHistory?.map((workout, index) => (
+                                        <TouchableOpacity 
+                                            style={[styles.workoutCard, {opacity: 0.5}]}
+                                            onPress={() => navigation.navigate('WorkoutsScreen', {workout: workout})}
+                                            key={index}
+                                            >
+                                            <View style={{width: 52, height: 52, marginRight: 16}}>
+                                                <Icons type={'workout'} />
+                                            </View>
+                                            <View style={{height: '100%', justifyContent: 'space-between'}}>
+                                                <Text style={[styles.workoutTitle, { textDecorationLine: 'line-through' }]}>{workout.name}</Text>
+                                                <Text style={styles.workoutDesc}>{workout.duration} min / {workout.calories} cal / {workout.exercises.length} workouts</Text>
+                                            </View>
+                                            <View style={{width: 16, height: 16, position: 'absolute', right: 15, top: 34}}>
+                                                <Icons type={'done'} />
+                                            </View>
+                                        </TouchableOpacity>  
+                                    ))
+                                }
+                            </View>
+                        )
+                    }
+                <View style={{height: 150}} />
                 </ScrollView>
-            </View>
 
-            <ScrollView style={{width: '100%'}}>
                 {
-                    userData?.selectedProgram && (
-                        <View style={{width: '100%'}}>
-                            <Text style={styles.label}>Workouts</Text>
-                            {
-                                userData?.selectedProgram.workouts.map((workout, index) => (
-                                    <TouchableOpacity 
-                                        style={styles.workoutCard}
-                                        onPress={() => navigation.navigate('WorkoutsScreen', {workout: workout})}
-                                        key={index}
-                                        >
-                                        <View style={{width: 52, height: 52, marginRight: 16}}>
-                                            <Icons type={'workout'} />
-                                        </View>
-                                        <View style={{height: '100%', justifyContent: 'space-between'}}>
-                                            <Text style={styles.workoutTitle}>{workout.title}</Text>
-                                            <Text style={styles.workoutDesc}>{workout.duration} min / {workout.exercises.length} workouts</Text>
-                                        </View>
-                                    </TouchableOpacity>    
-                                ))
-                            }
-                            {
-                                filteredWorkouts?.map((workout, index) => (
-                                    <TouchableOpacity 
-                                        style={styles.workoutCard}
-                                        onPress={() => navigation.navigate('WorkoutsScreen', {workout: workout})}
-                                        key={index}
-                                        >
-                                        <View style={{width: 52, height: 52, marginRight: 16}}>
-                                            <Icons type={'workout'} />
-                                        </View>
-                                        <View style={{height: '100%', justifyContent: 'space-between'}}>
-                                            <Text style={styles.workoutTitle}>{workout.name}</Text>
-                                            <Text style={styles.workoutDesc}>{workout.duration} min / {workout.exercises.length} workouts</Text>
-                                        </View>
-                                    </TouchableOpacity>  
-                                ))
-                            }
-                        </View>
-                    ) 
-                }
-                {
-                    filteredHistory.length > 0 && (
-                        <View style={{width: '100%'}}>
-                            <Text style={styles.label}>Workout History</Text>
-                            {
-                                filteredHistory?.map((workout, index) => (
-                                    <TouchableOpacity 
-                                        style={[styles.workoutCard, {opacity: 0.5}]}
-                                        onPress={() => navigation.navigate('WorkoutsScreen', {workout: workout})}
-                                        key={index}
-                                        >
-                                        <View style={{width: 52, height: 52, marginRight: 16}}>
-                                            <Icons type={'workout'} />
-                                        </View>
-                                        <View style={{height: '100%', justifyContent: 'space-between'}}>
-                                            <Text style={[styles.workoutTitle, { textDecorationLine: 'line-through' }]}>{workout.name}</Text>
-                                            <Text style={styles.workoutDesc}>{workout.duration} min / {workout.calories} cal / {workout.exercises.length} workouts</Text>
-                                        </View>
-                                        <View style={{width: 16, height: 16, position: 'absolute', right: 15, top: 34}}>
-                                            <Icons type={'done'} />
-                                        </View>
-                                    </TouchableOpacity>  
-                                ))
-                            }
+                    !userData?.selectedProgram && (
+                        <View style={{width: '100%', flexGrow: 1}}>
+                            <Text style={[styles.label, {marginBottom: 450, textAlign: 'center'}]}>There are no trainings on this day, you can add one</Text>
+                            <Image source={require('../assets/decor/wolf-form2.png')} style={{width: 390, height: 300, resizeMode: 'contain', position: 'absolute', bottom: 120, right: -20}} />
                         </View>
                     )
                 }
-               <View style={{height: 150}} />
-            </ScrollView>
-
-            {
-                !userData?.selectedProgram && (
-                    <View style={{width: '100%', flexGrow: 1}}>
-                        <Text style={[styles.label, {marginBottom: 450, textAlign: 'center'}]}>There are no trainings on this day, you can add one</Text>
-                        <Image source={require('../assets/decor/wolf-form2.png')} style={{width: 390, height: 300, resizeMode: 'contain', position: 'absolute', bottom: 120, right: -20}} />
-                    </View>
-                )
-            }
 
 
-            <TouchableOpacity style={styles.addBtn} onPress={() => navigation.navigate('AddWorkoutScreen')}>
-                <Text style={styles.addBtnText}>Add workout</Text>
-            </TouchableOpacity>
+                <TouchableOpacity style={styles.addBtn} onPress={() => navigation.navigate('AddWorkoutScreen')}>
+                    <Text style={styles.addBtnText}>Add workout</Text>
+                </TouchableOpacity>
 
-        </View>
+                </View>
+        </ImageBackground>
     )
 };
 
@@ -204,7 +206,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: "center",
-        backgroundColor: "#2a165c",
         padding: 16,
         paddingTop: height * 0.07
     },

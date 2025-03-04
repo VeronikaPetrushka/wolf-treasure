@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, ScrollView, Image, Share } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, ScrollView, Image, Share, ImageBackground } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Icons from "./Icons";
 
@@ -18,28 +18,30 @@ const ArticleDetails = ({ article }) => {
     };
         
     return (
-        <View style={styles.container}>
+        <ImageBackground source={require('../assets/back.png')} style={{flex: 1}}>
+            <View style={styles.container}>
 
-            <View style={{width: '100%', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', marginBottom: 27}}>
-                <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={() => navigation.goBack('')}>
-                    <View style={{width: 13, height: 20, marginRight: 10}}>
-                        <Icons type={'back'} />
-                    </View>
-                    <Text style={styles.backBtnText}>Back</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{width: 47, height: 44, padding: 10}} onPress={() => handleShare(article)}>
-                    <Icons type={'share'} />
-                </TouchableOpacity>
-            </View>
+                <View style={{width: '100%', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', marginBottom: 27}}>
+                    <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={() => navigation.goBack('')}>
+                        <View style={{width: 13, height: 20, marginRight: 10}}>
+                            <Icons type={'back'} />
+                        </View>
+                        <Text style={styles.backBtnText}>Back</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{width: 47, height: 44, padding: 10}} onPress={() => handleShare(article)}>
+                        <Icons type={'share'} />
+                    </TouchableOpacity>
+                </View>
 
-            <ScrollView style={{width: '100%'}}>
-                <Text style={styles.title}>{article.title}</Text>
-                <Image source={article.image} style={{width: '100%', height: 200, borderRadius: 20, resizeMode: 'cover', marginBottom: 20}} />
-                <Text style={styles.content}>{article.content}</Text>
-                <View style={{height: 100}} />
-            </ScrollView>
+                <ScrollView style={{width: '100%'}}>
+                    <Text style={styles.title}>{article.title}</Text>
+                    <Image source={article.image} style={{width: '100%', height: 200, borderRadius: 20, resizeMode: 'cover', marginBottom: 20}} />
+                    <Text style={styles.content}>{article.content}</Text>
+                    <View style={{height: 100}} />
+                </ScrollView>
 
-        </View>
+                </View>
+        </ImageBackground>
     );
 };
 
@@ -47,7 +49,6 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        backgroundColor: "#2a165c",
         padding: 16,
         paddingTop: height * 0.07
     },
